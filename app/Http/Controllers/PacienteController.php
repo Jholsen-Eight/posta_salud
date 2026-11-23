@@ -19,7 +19,7 @@ class PacienteController extends Controller
         $pacientes = Paciente::query()
             ->when($buscar, function ($consulta, $buscar) {
                 $consulta->where('dni', 'like', "$buscar%")
-                        ->orWhere('apellidos', 'ilike', "%$buscar%");
+                         ->orWhere('apellidos', 'ilike', "%$buscar%");
             })
             ->orderBy('apellidos')
             ->orderBy('nombres')
@@ -42,17 +42,24 @@ class PacienteController extends Controller
      */
     public function store(StorePacienteRequest $request)
     {
-        Paciente::create($request->validated());
-    
-        return redirect()->route('pacientes.index')
+        $paciente = Paciente::create($request->validated());
+
+        return redirect()->route('pacientes.show', $paciente)
             ->with('ok', 'Paciente registrado correctamente.');
     }
+
     /**
      * Display the specified resource.
      */
     public function show(Paciente $paciente)
     {
-        //
+        $citas = $paciente->citas()
+            ->with('personalMedico')
+            ->latest('fecha_hora')
+            ->take(5)
+            ->get();
+
+        return view('pacientes.show', compact('paciente', 'citas'));
     }
 
     /**
@@ -60,7 +67,7 @@ class PacienteController extends Controller
      */
     public function edit(Paciente $paciente)
     {
-        //
+        return view('pacientes.edit', compact('paciente'));
     }
 
     /**
@@ -68,7 +75,10 @@ class PacienteController extends Controller
      */
     public function update(UpdatePacienteRequest $request, Paciente $paciente)
     {
-        //
+        $paciente->update($request->validated());
+
+        return redirect()->route('pacientes.show', $paciente)
+            ->with('ok', 'Datos del paciente actualizados.');
     }
 
     /**
