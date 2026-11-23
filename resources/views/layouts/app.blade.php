@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('titulo', 'Posta de Salud')</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <style>
         .aviso-ok    { border-left: 6px solid #2f7d52; }
         .aviso-error { border-left: 6px solid #b3261e; }
@@ -13,7 +17,6 @@
             <ul><li><strong>{{ config('app.name') }}</strong></li></ul>
             <ul>
                 <li><a href="{{ route('pacientes.index') }}">Pacientes</a></li>
-                <li><a href="#">Pacientes</a></li>
                 <li><a href="#">Personal médico</a></li>
                 <li><a href="#">Citas</a></li>
                 <li><a href="#">Atenciones</a></li>

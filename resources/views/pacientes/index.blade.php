@@ -40,5 +40,5 @@
         </tbody>
     </table>
 
-    {{ $pacientes->links('pagination::simple-default') }}
+    {{ $pacientes->links() }}
 @endsection
