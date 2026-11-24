@@ -58,6 +58,29 @@ public function store(StorePersonalMedicoRequest $request)
         ->with('ok', 'Profesional registrado correctamente.');
 }
 
+public function cambiarEstado(PersonalMedico $personalMedico)
+{
+    if ($personalMedico->activo) {
+        $pendientes = $personalMedico->citas()
+            ->where('fecha_hora', '>=', now())
+            ->whereIn('estado', ['pendiente', 'confirmada'])
+            ->count();
+
+        if ($pendientes > 0) {
+            return back()->with('error',
+                "No se puede desactivar: tiene $pendientes cita(s) pendiente(s).");
+        }
+    }
+
+    $personalMedico->update(['activo' => ! $personalMedico->activo]);
+
+    $mensaje = $personalMedico->activo
+        ? 'Profesional reactivado.'
+        : 'Profesional desactivado.';
+
+    return back()->with('ok', $mensaje);
+}
+
 private function cuentasDisponibles(?PersonalMedico $medico = null)
 {
     return User::where('rol', 'personal_medico')

@@ -28,6 +28,16 @@
     <div class="acciones">
         <a href="{{ route('personal-medico.edit', $medico) }}"
            role="button">Editar</a>
+
+        <form method="POST"
+              action="{{ route('personal-medico.estado', $medico) }}">
+            @csrf
+            @method('PATCH')
+            <button type="submit" class="secondary">
+                {{ $medico->activo ? 'Desactivar' : 'Reactivar' }}
+            </button>
+        </form>
+
         <a href="{{ route('personal-medico.index') }}">Volver al listado</a>
     </div>
 @endsection
