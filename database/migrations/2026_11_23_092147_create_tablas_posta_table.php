@@ -8,6 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('rol', 20)->default('recepcion');
+        });
+
         Schema::create('pacientes', function (Blueprint $table) {
             $table->id();
             $table->char('dni', 8)->unique();
@@ -28,6 +32,7 @@ return new class extends Migration
             $table->string('especialidad', 60);
             $table->string('colegiatura', 20)->unique();
             $table->boolean('activo')->default(true);
+            $table->foreignId('user_id')->nullable()->unique()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
 
@@ -57,5 +62,9 @@ return new class extends Migration
         Schema::dropIfExists('citas');
         Schema::dropIfExists('personal_medico');
         Schema::dropIfExists('pacientes');
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('rol');
+        });
     }
 };

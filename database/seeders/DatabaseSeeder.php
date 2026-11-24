@@ -2,24 +2,29 @@
 
 namespace Database\Seeders;
 
+use App\Models\PersonalMedico;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $medicoUser = User::factory()->create([
+            'name' => 'Dra. Rosa Huamán',
+            'email' => 'medico@posta.test',
+            'rol' => 'personal_medico',
         ]);
+
+        PersonalMedico::factory()->create([
+            'nombres' => 'Rosa',
+            'apellidos' => 'Huamán',
+            'especialidad' => 'Medicina general',
+            'activo' => true,
+            'user_id' => $medicoUser->id,
+        ]);
+
+        PersonalMedico::factory(4)->create(['activo' => true]);
+        PersonalMedico::factory()->create(['activo' => false]);
     }
 }

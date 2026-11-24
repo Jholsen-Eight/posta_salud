@@ -1,0 +1,21 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\PersonalMedico;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class PersonalMedicoFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'dni' => fake()->unique()->numerify('########'),
+            'nombres' => fake()->firstName(),
+            'apellidos' => fake()->lastName() . ' ' . fake()->lastName(),
+            'especialidad' => fake()->randomElement(PersonalMedico::ESPECIALIDADES),
+            'colegiatura' => fake()->unique()->numerify('#####'),
+            'activo' => true,
+        ];
+    }
+}
